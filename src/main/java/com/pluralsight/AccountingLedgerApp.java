@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class AccountingLedgerApp {
@@ -37,18 +38,10 @@ public class AccountingLedgerApp {
                 String vendor = myscanner.next();
                 System.out.println("Please enter amount");
                 double amount = myscanner.nextDouble();
-
+                // transaction object
                 Transaction transaction1 = new Transaction(date, time, description, vendor, amount);
-                try {
-                    BufferedWriter fileWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
-                    fileWriter.write("\n");
-                    fileWriter.write(String.valueOf(transaction1));
-
-                    fileWriter.close();
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                    throw new RuntimeException(e);
-                }
+                // call method to write transaction to file
+                writeTransactions(transaction1);
 
 
             }
@@ -66,17 +59,10 @@ public class AccountingLedgerApp {
                 System.out.println("Please enter amount");
                 double amount = myscanner.nextDouble();
 
+                // transaction object
                 Transaction transaction1 = new Transaction(date, time, description, vendor, amount);
-                try {
-                    BufferedWriter fileWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
-                    fileWriter.write("\n");
-                    fileWriter.write(String.valueOf(transaction1));
-
-                    fileWriter.close();
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                    throw new RuntimeException(e);
-                }
+                // call method to write transaction to file
+                writeTransactions(transaction1);
 
             }
             // user decides to display ledger screen
@@ -96,8 +82,10 @@ public class AccountingLedgerApp {
         }
     }
 
+    // method to print sub screen menu
     public static void ledgerScreen() {
         Scanner myscanner = new Scanner(System.in);
+        // display all menu options then save user input
         System.out.println("Ledger Menu options");
         System.out.println("A: Display All Entries");
         System.out.println("D: Deposits - Display only the entries that are deposits into the account");
@@ -131,6 +119,20 @@ public class AccountingLedgerApp {
         // user did not enter correct input
         else {
             System.out.println("Invalid input.");
+        }
+    }
+    public static void writeTransactions(Transaction transaction) {
+        try {
+            BufferedWriter fileWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+            // 2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00
+            String line = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+            fileWriter.write(line);
+            fileWriter.write("\n");
+
+            fileWriter.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
