@@ -1,12 +1,12 @@
 package com.pluralsight;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -96,14 +96,57 @@ public class AccountingLedgerApp {
 
         // user wants to display all entries
         if (userInput.equalsIgnoreCase("A")) {
+            List<Transaction> transactions = readTransactions();
+            List<Transaction> deposits = new ArrayList<>();
+            for (Transaction line : transactions) {
+                deposits.add(line);
+            }
+            for (Transaction line : deposits) {
+                System.out.printf("%s|%s|%s|%s|%.2f%n",
+                        line.getDate(), line.getTime(), line.getDescription(),
+                        line.getVendor(), line.getAmount());
+            }
 
         }
         // display only the entries that are deposits into the account
         else if (userInput.equalsIgnoreCase("D")) {
+            //System.out.println("inside D - print deposits");
 
+            List<Transaction> transactions = readTransactions();
+            List<Transaction> deposits = new ArrayList<>();
+            for (Transaction line : transactions) {
+                //System.out.println("line.getamount is " + line.getAmount());
+                if (line.getAmount() > 0) {
+                    //System.out.println("line amount is over 0");
+                    deposits.add(line);
+                }
+
+            }
+            for (Transaction line : deposits) {
+                //System.out.println(" about to print deposits");
+                System.out.printf("%s|%s|%s|%s|%.2f%n",
+                        line.getDate(), line.getTime(), line.getDescription(),
+                        line.getVendor(), line.getAmount());
+            }
         }
         // Display only the negative entries (or payments")
         else if (userInput.equalsIgnoreCase("P")) {
+            List<Transaction> transactions = readTransactions();
+            List<Transaction> deposits = new ArrayList<>();
+            for (Transaction line : transactions) {
+                //System.out.println("line.getamount is " + line.getAmount());
+                if (line.getAmount() < 0) {
+                    //System.out.println("line amount is under 0");
+                    deposits.add(line);
+                }
+
+            }
+            for (Transaction line : deposits) {
+                //System.out.println(" about to print payments");
+                System.out.printf("%s|%s|%s|%s|%.2f%n",
+                        line.getDate(), line.getTime(), line.getDescription(),
+                        line.getVendor(), line.getAmount());
+            }
 
         }
         // A new screen that allows the user to run predefined reports
@@ -134,6 +177,36 @@ public class AccountingLedgerApp {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<Transaction> readTransactions() {
+        List<Transaction> transactions = new ArrayList<>();
+        try {
+            BufferedReader fileReader = new BufferedReader(new FileReader("transactions.csv"));
+            String line;
+            while((line = fileReader.readLine()) != null) {
+                //print out each line
+                //System.out.println(line);
+                // parse each line into a Transaction object so i can later compare amounts
+                if (line.isBlank() || line.startsWith("date")) {
+                    continue;
+                }
+                String[] parts = line.split("\\|");
+                LocalDate date = LocalDate.parse(parts[0]);
+                LocalTime time = LocalTime.parse(parts[1]);
+                String description = parts[2];
+                String vendor = parts[3];
+                double amount = Double.parseDouble(parts[4]);
+                transactions.add(new Transaction(date, time, description, vendor, amount));
+            }
+
+            //close the file when we are done
+            fileReader.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return transactions;
     }
 
 }
