@@ -1,5 +1,12 @@
 package com.pluralsight;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class AccountingLedgerApp {
@@ -19,10 +26,40 @@ public class AccountingLedgerApp {
 
             // user decides to add deposit information
             if (userInput.equalsIgnoreCase("D")) {
+                System.out.println("Please enter date (yyyy-mm-dd");
+                LocalDate date = LocalDate.parse(myscanner.next());
+                System.out.println("Please enter time");
+                LocalTime time = LocalTime.parse(myscanner.next());
+                System.out.println("Please add deposit short description");
+                myscanner.nextLine();
+                String description = myscanner.nextLine();
+                System.out.println("Please add vendor");
+                String vendor = myscanner.next();
+                System.out.println("Please enter amount");
+                double amount = myscanner.nextDouble();
+
+                Transaction transaction1 = new Transaction(date, time, description, vendor, amount);
+                try {
+                    BufferedWriter fileWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+                    fileWriter.write("\n");
+                    fileWriter.write(String.valueOf(transaction1));
+
+                    fileWriter.close();
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                    throw new RuntimeException(e);
+                }
+
 
             }
             // user decides to make payment
             else if (userInput.equalsIgnoreCase("P")) {
+                /*
+                    System.out.printf("Id: %d  Name: %s  Gross Pay: $%.2f%n",
+                        employee.getEmployeeId(),
+                        employee.getName(),
+                        employee.getGrossPay());
+                     */
 
             }
             // user decides to display ledger screen
@@ -79,4 +116,5 @@ public class AccountingLedgerApp {
             System.out.println("Invalid input.");
         }
     }
+
 }
