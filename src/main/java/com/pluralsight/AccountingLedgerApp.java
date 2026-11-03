@@ -54,12 +54,29 @@ public class AccountingLedgerApp {
             }
             // user decides to make payment
             else if (userInput.equalsIgnoreCase("P")) {
-                /*
-                    System.out.printf("Id: %d  Name: %s  Gross Pay: $%.2f%n",
-                        employee.getEmployeeId(),
-                        employee.getName(),
-                        employee.getGrossPay());
-                     */
+                System.out.println("Please enter date (yyyy-mm-dd");
+                LocalDate date = LocalDate.parse(myscanner.next());
+                System.out.println("Please enter time");
+                LocalTime time = LocalTime.parse(myscanner.next());
+                System.out.println("Please add payment short description");
+                myscanner.nextLine();
+                String description = myscanner.nextLine();
+                System.out.println("Please add vendor");
+                String vendor = myscanner.next();
+                System.out.println("Please enter amount");
+                double amount = myscanner.nextDouble();
+
+                Transaction transaction1 = new Transaction(date, time, description, vendor, amount);
+                try {
+                    BufferedWriter fileWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+                    fileWriter.write("\n");
+                    fileWriter.write(String.valueOf(transaction1));
+
+                    fileWriter.close();
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                    throw new RuntimeException(e);
+                }
 
             }
             // user decides to display ledger screen
