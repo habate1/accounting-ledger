@@ -151,7 +151,53 @@ public class AccountingLedgerApp {
         }
         // A new screen that allows the user to run predefined reports
         else if (userInput.equalsIgnoreCase("R")) {
+            /*
+            R) Reports - A new screen that allows the user to run pre-defined reports or
+                to run a custom search
+                ▪ 1) Month To Date
+                ▪ 2) Previous Month
+                ▪ 3) Year To Date
+                ▪ 4) Previous Year
+                ▪ 5) Search by Vendor - prompt the user for the vendor name and
+                display all entries for that vendor
+                ▪ 0) Back - go back to the Ledger page
+             */
+            boolean reports = true;
+            while (reports) {
+                System.out.println("Reports Screen");
+                System.out.println("""
+                        ▪ 1) Month To Date
+                        ▪ 2) Previous Month
+                        ▪ 3) Year To Date
+                        ▪ 4) Previous Year
+                        ▪ 5) Search by Vendor - prompt the user for the vendor name and
+                             display all entries for that vendor
+                        ▪ 0) Back - go back to the Ledger page
+                        """);
+                int userNum = myscanner.nextInt();
+                // go back to ledger page
+                if (userNum == 0) {
+                    reports = false;
+                }
+                else if (userNum == 1) {
 
+                }
+                else if (userNum == 2) {
+
+                }
+                else if (userNum == 3) {
+
+                }
+                else if (userNum == 4) {
+
+                }
+                else if (userNum == 5) {
+
+                }
+                else {
+                    System.out.println("Invalid input.");
+                }
+            }
         }
         // use wants to go back home
         else if (userInput.equalsIgnoreCase("H")) {
