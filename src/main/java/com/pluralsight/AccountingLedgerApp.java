@@ -272,6 +272,25 @@ public class AccountingLedgerApp {
                 }
                 // search by vendor
                 else if (userNum == 5) {
+                    System.out.println("Enter name of vendor: ");
+                    myscanner.nextLine();
+                    String vendorName = myscanner.nextLine();
+
+                    List<Transaction> transactions = readTransactions();
+                    List<Transaction> results = new ArrayList<>();
+                    for (Transaction line : transactions) {
+                        //System.out.println("line.getamount is " + line.getAmount());
+                        if (line.getVendor().equalsIgnoreCase(vendorName)) {
+                            results.add(line);
+                        }
+
+                    }
+                    for (Transaction line : results) {
+                        //System.out.println(" about to print ");
+                        System.out.printf("%s|%s|%s|%s|%.2f%n",
+                                line.getDate(), line.getTime(), line.getDescription(),
+                                line.getVendor(), line.getAmount());
+                    }
 
                 }
                 // user input is not 0-5
