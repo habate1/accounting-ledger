@@ -26,58 +26,22 @@ public class AccountingLedgerApp {
             String userInput = myscanner.nextLine();
 
             // user decides to add deposit information
-            if (userInput.equalsIgnoreCase("D")) {
-                System.out.println("Please enter date (yyyy-mm-dd");
-                LocalDate date = LocalDate.parse(myscanner.next());
-                System.out.println("Please enter time");
-                LocalTime time = LocalTime.parse(myscanner.next());
-                System.out.println("Please add deposit short description");
-                myscanner.nextLine();
-                String description = myscanner.nextLine();
-                System.out.println("Please add vendor");
-                String vendor = myscanner.next();
-                System.out.println("Please enter amount");
-                double amount = myscanner.nextDouble();
-                // transaction object
-                Transaction transaction1 = new Transaction(date, time, description, vendor, amount);
-                // call method to write transaction to file
-                writeTransactions(transaction1);
-
-
-            }
-            // user decides to make payment
-            else if (userInput.equalsIgnoreCase("P")) {
-                System.out.println("Please enter date (yyyy-mm-dd");
-                LocalDate date = LocalDate.parse(myscanner.next());
-                System.out.println("Please enter time");
-                LocalTime time = LocalTime.parse(myscanner.next());
-                System.out.println("Please add payment short description");
-                myscanner.nextLine();
-                String description = myscanner.nextLine();
-                System.out.println("Please add vendor");
-                String vendor = myscanner.next();
-                System.out.println("Please enter amount");
-                double amount = myscanner.nextDouble();
-
-                // transaction object
-                Transaction transaction1 = new Transaction(date, time, description, vendor, amount);
-                // call method to write transaction to file
-                writeTransactions(transaction1);
-
-            }
-            // user decides to display ledger screen
-            else if (userInput.equalsIgnoreCase("L")) {
-                ledgerScreen();
-            }
-            // user decides to exit application
-            else if (userInput.equalsIgnoreCase("X")) {
-                // set to false so while loop ends here
-                displayMenu = false;
-            }
-            // user did not enter a valid input. ask user to try again and loop menu again
-            else {
-                System.out.println("Invalid input. Please choose from menu option only.");
-                System.out.println("Back to Home screen");
+            switch (userInput) {
+                case "D" -> {
+                    Transaction transaction = askUserInfo(myscanner);
+                    writeTransactions(transaction);
+                }
+                // user decides to make payment
+                case "P" -> {
+                    Transaction transaction1 = askUserInfo(myscanner);
+                    writeTransactions(transaction1);
+                }
+                // user decides to display ledger screen
+                case "L" -> ledgerScreen();
+                // user decides to exit application
+                case "X" -> displayMenu = false; // set to false so while loop ends here
+                // user did not enter a valid input. ask user to try again and loop menu again
+                default -> System.out.println("Invalid input. Please choose from menu option only.");
             }
         }
     }
@@ -309,6 +273,7 @@ public class AccountingLedgerApp {
         else {
             System.out.println("Invalid input.");
         }
+
     }
     public static void writeTransactions(Transaction transaction) {
         try {
@@ -355,8 +320,24 @@ public class AccountingLedgerApp {
         return transactions;
     }
 
-    public static void searchByDate() {
+    public static Transaction askUserInfo(Scanner myscanner) {
+        System.out.println("Please enter date (yyyy-mm-dd");
+        LocalDate date = LocalDate.parse(myscanner.next());
+        System.out.println("Please enter time");
+        LocalTime time = LocalTime.parse(myscanner.next());
+        System.out.println("Please add deposit short description");
+        myscanner.nextLine();
+        String description = myscanner.nextLine();
+        System.out.println("Please add vendor");
+        String vendor = myscanner.next();
+        System.out.println("Please enter amount");
+        double amount = myscanner.nextDouble();
+        Transaction transaction1 = new Transaction(date, time, description, vendor, amount);
+
+        return transaction1;
 
     }
 
 }
+
+
