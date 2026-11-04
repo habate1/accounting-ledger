@@ -211,7 +211,7 @@ public class AccountingLedgerApp {
                     List<Transaction> results = new ArrayList<>();
                     for (Transaction line : transactions) {
                         //System.out.println("line.getamount is " + line.getAmount());
-                        if (line.getDate().getYear() == year && line.getDate().getMonthValue() == month && !line.getDate().isAfter(today)) {
+                        if (line.getDate().getYear() == year && line.getDate().getMonthValue() == month - 1) {
                             results.add(line);
                         }
 
@@ -226,10 +226,48 @@ public class AccountingLedgerApp {
                 }
                 // year to date
                 else if (userNum == 3) {
+                    LocalDate today = LocalDate.now();
+
+                    int year = today.getYear(), month = today.getMonthValue();
+
+                    List<Transaction> transactions = readTransactions();
+                    List<Transaction> results = new ArrayList<>();
+                    for (Transaction line : transactions) {
+                        //System.out.println("line.getamount is " + line.getAmount());
+                        if (line.getDate().getYear() == year) {
+                            results.add(line);
+                        }
+
+                    }
+                    for (Transaction line : results) {
+                        //System.out.println(" about to print ");
+                        System.out.printf("%s|%s|%s|%s|%.2f%n",
+                                line.getDate(), line.getTime(), line.getDescription(),
+                                line.getVendor(), line.getAmount());
+                    }
 
                 }
                 //previous year
                 else if (userNum == 4) {
+                    LocalDate today = LocalDate.now();
+
+                    int year = today.getYear(), month = today.getMonthValue();
+
+                    List<Transaction> transactions = readTransactions();
+                    List<Transaction> results = new ArrayList<>();
+                    for (Transaction line : transactions) {
+                        //System.out.println("line.getamount is " + line.getAmount());
+                        if (line.getDate().getYear() == year - 1) {
+                            results.add(line);
+                        }
+
+                    }
+                    for (Transaction line : results) {
+                        //System.out.println(" about to print ");
+                        System.out.printf("%s|%s|%s|%s|%.2f%n",
+                                line.getDate(), line.getTime(), line.getDescription(),
+                                line.getVendor(), line.getAmount());
+                    }
 
                 }
                 // search by vendor
