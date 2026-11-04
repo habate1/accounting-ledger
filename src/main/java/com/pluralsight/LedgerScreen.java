@@ -22,21 +22,16 @@ public class LedgerScreen {
         // user wants to display all entries
         if (userInput.equalsIgnoreCase("A")) {
             List<Transaction> transactions = readTransactions();
-            List<Transaction> deposits = new ArrayList<>();
+            List<Transaction> entries = new ArrayList<>();
             for (Transaction line : transactions) {
-                deposits.add(line);
+                entries.add(line);
             }
-            for (Transaction line : deposits) {
-                System.out.printf("%s|%s|%s|%s|%.2f%n",
-                        line.getDate(), line.getTime(), line.getDescription(),
-                        line.getVendor(), line.getAmount());
-            }
+            printTransactions(entries);
 
         }
         // display only the entries that are deposits into the account
         else if (userInput.equalsIgnoreCase("D")) {
             //System.out.println("inside D - print deposits");
-
             List<Transaction> transactions = readTransactions();
             List<Transaction> deposits = new ArrayList<>();
             for (Transaction line : transactions) {
@@ -45,48 +40,25 @@ public class LedgerScreen {
                     //System.out.println("line amount is over 0");
                     deposits.add(line);
                 }
-
             }
-            for (Transaction line : deposits) {
-                //System.out.println(" about to print deposits");
-                System.out.printf("%s|%s|%s|%s|%.2f%n",
-                        line.getDate(), line.getTime(), line.getDescription(),
-                        line.getVendor(), line.getAmount());
-            }
+            printTransactions(deposits);
         }
         // Display only the negative entries (or payments")
         else if (userInput.equalsIgnoreCase("P")) {
             List<Transaction> transactions = readTransactions();
-            List<Transaction> deposits = new ArrayList<>();
+            List<Transaction> payments = new ArrayList<>();
             for (Transaction line : transactions) {
                 //System.out.println("line.getamount is " + line.getAmount());
                 if (line.getAmount() < 0) {
                     //System.out.println("line amount is under 0");
-                    deposits.add(line);
+                    payments.add(line);
                 }
-
             }
-            for (Transaction line : deposits) {
-                //System.out.println(" about to print payments");
-                System.out.printf("%s|%s|%s|%s|%.2f%n",
-                        line.getDate(), line.getTime(), line.getDescription(),
-                        line.getVendor(), line.getAmount());
-            }
+            printTransactions(payments);
 
         }
         // A new screen that allows the user to run predefined reports
         else if (userInput.equalsIgnoreCase("R")) {
-            /*
-            R) Reports - A new screen that allows the user to run pre-defined reports or
-                to run a custom search
-                ▪ 1) Month To Date
-                ▪ 2) Previous Month
-                ▪ 3) Year To Date
-                ▪ 4) Previous Year
-                ▪ 5) Search by Vendor - prompt the user for the vendor name and
-                display all entries for that vendor
-                ▪ 0) Back - go back to the Ledger page
-             */
             boolean reports = true;
             while (reports) {
                 System.out.println("Reports Screen");
@@ -117,14 +89,8 @@ public class LedgerScreen {
                         if (line.getDate().getYear() == year && line.getDate().getMonthValue() == month) {
                             results.add(line);
                         }
-
                     }
-                    for (Transaction line : results) {
-                        //System.out.println(" about to print ");
-                        System.out.printf("%s|%s|%s|%s|%.2f%n",
-                                line.getDate(), line.getTime(), line.getDescription(),
-                                line.getVendor(), line.getAmount());
-                    }
+                    printTransactions(results);
                 }
                 // previous month
                 else if (userNum == 2) {
@@ -141,12 +107,7 @@ public class LedgerScreen {
                         }
 
                     }
-                    for (Transaction line : results) {
-                        //System.out.println(" about to print ");
-                        System.out.printf("%s|%s|%s|%s|%.2f%n",
-                                line.getDate(), line.getTime(), line.getDescription(),
-                                line.getVendor(), line.getAmount());
-                    }
+                    printTransactions(results);
 
                 }
                 // year to date
@@ -164,12 +125,7 @@ public class LedgerScreen {
                         }
 
                     }
-                    for (Transaction line : results) {
-                        //System.out.println(" about to print ");
-                        System.out.printf("%s|%s|%s|%s|%.2f%n",
-                                line.getDate(), line.getTime(), line.getDescription(),
-                                line.getVendor(), line.getAmount());
-                    }
+                    printTransactions(results);
 
                 }
                 //previous year
@@ -187,12 +143,7 @@ public class LedgerScreen {
                         }
 
                     }
-                    for (Transaction line : results) {
-                        //System.out.println(" about to print ");
-                        System.out.printf("%s|%s|%s|%s|%.2f%n",
-                                line.getDate(), line.getTime(), line.getDescription(),
-                                line.getVendor(), line.getAmount());
-                    }
+                    printTransactions(results);
 
                 }
                 // search by vendor
@@ -210,12 +161,7 @@ public class LedgerScreen {
                         }
 
                     }
-                    for (Transaction line : results) {
-                        //System.out.println(" about to print ");
-                        System.out.printf("%s|%s|%s|%s|%.2f%n",
-                                line.getDate(), line.getTime(), line.getDescription(),
-                                line.getVendor(), line.getAmount());
-                    }
+                    printTransactions(results);
 
                 }
                 // user input is not 0-5
@@ -228,11 +174,20 @@ public class LedgerScreen {
         else if (userInput.equalsIgnoreCase("H")) {
             // call main method so user can go back to home screen
             AccountingLedgerApp.main(new String[0]);
-
         }
         // user did not enter correct input
         else {
             System.out.println("Invalid input.");
+        }
+
+    }
+
+    public static void printTransactions(List<Transaction> results) {
+        for (Transaction line : results) {
+            //System.out.println(" about to print ");
+            System.out.printf("%s|%s|%s|%s|%.2f%n",
+                    line.getDate(), line.getTime(), line.getDescription(),
+                    line.getVendor(), line.getAmount());
         }
 
     }
