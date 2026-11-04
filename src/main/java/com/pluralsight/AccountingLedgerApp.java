@@ -179,21 +179,64 @@ public class AccountingLedgerApp {
                 if (userNum == 0) {
                     reports = false;
                 }
+                // month to date
                 else if (userNum == 1) {
+                    LocalDate today = LocalDate.now();
 
+                    int year = today.getYear(), month = today.getMonthValue();
+
+                    List<Transaction> transactions = readTransactions();
+                    List<Transaction> results = new ArrayList<>();
+                    for (Transaction line : transactions) {
+                        //System.out.println("line.getamount is " + line.getAmount());
+                        if (line.getDate().getYear() == year && line.getDate().getMonthValue() == month) {
+                            results.add(line);
+                        }
+
+                    }
+                    for (Transaction line : results) {
+                        //System.out.println(" about to print ");
+                        System.out.printf("%s|%s|%s|%s|%.2f%n",
+                                line.getDate(), line.getTime(), line.getDescription(),
+                                line.getVendor(), line.getAmount());
+                    }
                 }
+                // previous month
                 else if (userNum == 2) {
+                    LocalDate today = LocalDate.now();
+
+                    int year = today.getYear(), month = today.getMonthValue();
+
+                    List<Transaction> transactions = readTransactions();
+                    List<Transaction> results = new ArrayList<>();
+                    for (Transaction line : transactions) {
+                        //System.out.println("line.getamount is " + line.getAmount());
+                        if (line.getDate().getYear() == year && line.getDate().getMonthValue() == month && !line.getDate().isAfter(today)) {
+                            results.add(line);
+                        }
+
+                    }
+                    for (Transaction line : results) {
+                        //System.out.println(" about to print ");
+                        System.out.printf("%s|%s|%s|%s|%.2f%n",
+                                line.getDate(), line.getTime(), line.getDescription(),
+                                line.getVendor(), line.getAmount());
+                    }
 
                 }
+                // year to date
                 else if (userNum == 3) {
 
                 }
+                //previous year
                 else if (userNum == 4) {
 
                 }
+                // search by vendor
                 else if (userNum == 5) {
 
                 }
+                // user input is not 0-5
                 else {
                     System.out.println("Invalid input.");
                 }
@@ -253,6 +296,10 @@ public class AccountingLedgerApp {
             throw new RuntimeException(e);
         }
         return transactions;
+    }
+
+    public static void searchByDate() {
+
     }
 
 }
