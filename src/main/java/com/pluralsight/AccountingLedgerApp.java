@@ -14,20 +14,23 @@ import static com.pluralsight.LedgerScreen.ledgerScreen;
 
 public class AccountingLedgerApp {
     public static void main(String[] args) {
+
         Scanner myscanner = new Scanner(System.in);
         welcomeScreen(myscanner);
-        System.out.println("Please choose 1 option");
 
         // while loop displays home screen until user decides to exit
         boolean displayMenu = true;
         while (displayMenu) {
             // menu options
-            System.out.println("D: Add Deposit Information");
-            System.out.println("P: Make Payment (Debit)");
-            System.out.println("L: Display Ledger Screen");
-            System.out.println("X: Exit the application");
-            // get user input
-            String userInput = myscanner.nextLine();
+            System.out.println("barista@cozycafe:~$ menu");
+            System.out.println("---------------------------------------------");
+            System.out.println("  [D]  deposit    add a deposit");
+            System.out.println("  [P]  payment    make a payment (debit)");
+            System.out.println("  [L]  ledger     open the ledger");
+            System.out.println("  [X]  exit       close the register");
+            System.out.println("---------------------------------------------");
+            System.out.print("barista@cozycafe:~$ ");
+            String userInput = myscanner.nextLine(); // get user input
 
             // user decides to add deposit information
             switch (userInput) {
@@ -40,12 +43,9 @@ public class AccountingLedgerApp {
                     Transaction transaction1 = askUserInfo(myscanner);
                     writeTransactions(transaction1);
                 }
-                // user decides to display ledger screen
-                case "L" -> ledgerScreen();
-                // user decides to exit application
-                case "X" -> displayMenu = false; // set to false so while loop ends here
-                // user did not enter a valid input. ask user to try again and loop menu again
-                default -> System.out.println("Invalid input. Please choose from menu option only.");
+                case "L" -> ledgerScreen(); // user decides to display ledger screen
+                case "X" -> displayMenu = false; // user decides to exit application. set to false so while loop ends here
+                default -> System.out.println("Invalid input. Please choose from menu option only."); // user did not enter a valid input. ask user to try again and loop menu again
             }
         }
     }
@@ -102,19 +102,20 @@ public class AccountingLedgerApp {
         LocalTime time = LocalTime.now();
 
         System.out.println("Please add deposit short description");
-        myscanner.nextLine();
         String description = myscanner.nextLine();
         System.out.println("Please add vendor");
-        String vendor = myscanner.next();
+        String vendor = myscanner.nextLine();
         System.out.println("Please enter amount");
-        double amount = myscanner.nextDouble();
-        Transaction transaction1 = new Transaction(date, time, description, vendor, amount);
+        String amount = myscanner.nextLine();
+        int amountVal = Integer.parseInt(amount);
+        Transaction transaction1 = new Transaction(date, time, description, vendor, amountVal);
 
         return transaction1;
 
     }
 
     public static void welcomeScreen(Scanner myscanner) {
+
         List<Transaction> transactions = readTransactions();
         double balance = 0;
         for (Transaction t : transactions) {

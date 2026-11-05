@@ -63,7 +63,15 @@ public class Transaction {
         return vendor;
     }
 
+
+
+
+
+
+
+
     ///
+    /*
     @Override
     public String toString() {
         return "Transaction{" +
@@ -73,5 +81,22 @@ public class Transaction {
                 ", vendor='" + vendor + '\'' +
                 ", amount=" + amount +
                 '}';
+    }
+    */
+    // header row: same widths as toString() below
+    public static String header() {
+        return String.format("%-12s %-9s %-26s %-17s %10s%n%-12s %-9s %-26s %-17s %10s",
+                "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT",
+                "----------", "--------", "-------------------------", "----------------", "----------");
+    }
+
+    @Override
+    public String toString() {
+        String GREEN = "\u001B[32m", RED = "\u001B[31m", RESET = "\u001B[0m";
+        String color = amount >= 0 ? GREEN : RED;
+        String timeText = time.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        return color + String.format("%-12s %-9s %-26s %-17s %10.2f",
+                date, timeText, description, vendor, amount) + RESET;
     }
 }

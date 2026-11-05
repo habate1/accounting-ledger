@@ -1,5 +1,4 @@
 package com.pluralsight;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +10,16 @@ public class LedgerScreen {
     public static void ledgerScreen() {
         Scanner myscanner = new Scanner(System.in);
         // display all menu options then save user input
-        System.out.println("Ledger Menu options");
-        System.out.println("A: Display All Entries");
-        System.out.println("D: Deposits - Display only the entries that are deposits into the account");
-        System.out.println("P: Payments - Display only the negative entries (or payments");
-        System.out.println("R: Reports - A new screen that allows the user to run predefined reports or run custom search");
-        System.out.println("H: Home - Go back to Home");
+        System.out.println();
+        System.out.println("barista@cozycafe:~/ledger$ menu");
+        System.out.println("----------------------------");
+        System.out.println("  [A]  all        show all entries");
+        System.out.println("  [D]  deposits   show deposits only");
+        System.out.println("  [P]  payments   show payments only");
+        System.out.println("  [R]  reports    run reports or custom search");
+        System.out.println("  [H]  home       back to the main menu");
+        System.out.println("----------------------------");
+        System.out.print("barista@cozycafe:~/ledger$ ");
         String userInput = myscanner.nextLine();
 
         // user wants to display all entries
@@ -72,6 +75,8 @@ public class LedgerScreen {
                                  display all entries for that vendor
                             ▪ 0) Back - go back to the Ledger page
                             """);
+                    System.out.print("Pick 1-6 or 0 to exit report screen");
+                    System.out.print("barista@cozycafe:~/ledger$ ");
                     int userNum = myscanner.nextInt();
                     // go back to ledger page
                     switch (userNum) {
@@ -153,6 +158,7 @@ public class LedgerScreen {
                         }
                         // search by vendor
                         case 5 -> {
+                            // needs to accept just enter
                             System.out.println("Enter name of vendor: ");
                             myscanner.nextLine();
                             String vendorName = myscanner.nextLine();
@@ -181,16 +187,21 @@ public class LedgerScreen {
                         o If the user does not enter a value, you should not filter on that field
                      */
                             System.out.println("Enter Start Date: ");
-                            String startDate = myscanner.nextLine();
+                            String startDate = myscanner.nextLine().trim();
                             System.out.println("Enter End Date: ");
-                            String endDate = myscanner.nextLine();
+                            String endDate = myscanner.nextLine().trim();
                             System.out.println("Enter Description: ");
-                            String descr = myscanner.nextLine();
+                            String descr = myscanner.nextLine().trim();
                             System.out.println("Enter Vendor: ");
-                            String vendorName = myscanner.nextLine();
+                            String vendorName = myscanner.nextLine().trim();
                             System.out.println("Enter Amount: ");
+                            //String v = myscanner.nextLine().trim();
                             //myscanner.nextLine();
-                            double amount = myscanner.nextDouble();
+                            String amountText = myscanner.nextLine().trim();
+                            double amount = Double.parseDouble(amountText);
+
+                            LocalDate parseStart = LocalDate.parse(startDate);
+                            LocalDate parseEnd = LocalDate.parse(endDate);
 
                             List<Transaction> transactions = readTransactions();
                             List<Transaction> results = new ArrayList<>();
@@ -200,10 +211,10 @@ public class LedgerScreen {
 
                             for (Transaction line : transactions) {
                                 //System.out.println("line.getamount is " + line.getAmount());
-                                if (line.getAmount() == amount) {
+                                if (line.getDate() == parseStart) {
                                     results.add(line);
                                 }
-                                if (line.getAmount() == amount) {
+                                if (line.getDate() == parseEnd) {
                                     results.add(line);
                                 }
                                 if (line.getDescription().equalsIgnoreCase(descr)) {
@@ -239,13 +250,31 @@ public class LedgerScreen {
 
     }
 
-    public static void printTransactions(List<Transaction> results) {
+    public static void printTransactions(List<Transaction> transactions) {
+        if (transactions.isEmpty()) {
+            System.out.println("grep: no matches found");
+            return;
+        }
+        System.out.println();
+        System.out.println(Transaction.header());
+        for (Transaction t : transactions) {
+            System.out.println(t);   // calls your new toString()
+        }
+        System.out.println();
+        System.out.println(transactions.size() + " entries");
+
+        // byte line for background
+        // colors theme
+
+        /*
         for (Transaction line : results) {
             //System.out.println(" about to print ");
             System.out.printf("%s|%s|%s|%s|%.2f%n",
                     line.getDate(), line.getTime(), line.getDescription(),
                     line.getVendor(), line.getAmount());
         }
+
+         */
 
     }
 }
