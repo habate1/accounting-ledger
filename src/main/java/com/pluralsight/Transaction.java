@@ -62,4 +62,16 @@ public class Transaction {
     public String getVendor() {
         return vendor;
     }
+
+    ///
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "date=" + date +
+                ", time=" + time +
+                ", description='" + description + '\'' +
+                ", vendor='" + vendor + '\'' +
+                ", amount=" + amount +
+                '}';
+    }
 }

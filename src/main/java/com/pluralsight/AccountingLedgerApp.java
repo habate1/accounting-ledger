@@ -15,6 +15,8 @@ import static com.pluralsight.LedgerScreen.ledgerScreen;
 public class AccountingLedgerApp {
     public static void main(String[] args) {
         Scanner myscanner = new Scanner(System.in);
+        welcomeScreen(myscanner);
+        System.out.println("Please choose 1 option");
 
         // while loop displays home screen until user decides to exit
         boolean displayMenu = true;
@@ -96,10 +98,9 @@ public class AccountingLedgerApp {
     }
 
     public static Transaction askUserInfo(Scanner myscanner) {
-        System.out.println("Please enter date (yyyy-mm-dd");
-        LocalDate date = LocalDate.parse(myscanner.next());
-        System.out.println("Please enter time");
-        LocalTime time = LocalTime.parse(myscanner.next());
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+
         System.out.println("Please add deposit short description");
         myscanner.nextLine();
         String description = myscanner.nextLine();
@@ -111,6 +112,46 @@ public class AccountingLedgerApp {
 
         return transaction1;
 
+    }
+
+    public static void welcomeScreen(Scanner myscanner) {
+        List<Transaction> transactions = readTransactions();
+        double balance = 0;
+        for (Transaction t : transactions) {
+            balance += t.getAmount();
+        }
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss yyyy");
+
+        System.out.println("""
+                 ( (
+                  ) )
+               ........
+               |      |]
+               \\      /
+                `----'
+        """);
+        System.out.println("=== Accounting Ledger ===");
+        System.out.println("==== for Cozy Cafe ====");
+        System.out.println("");
+
+        System.out.println("Welcome to CozyCafe OS 1.0 LTS (Espresso/Linux 6.9.0-latte)");
+        System.out.println();
+        System.out.println(" * Register:     https://cozycafe.example/menu");
+        System.out.println(" * Support:      ask the barista");
+        System.out.println();
+        System.out.println("  System information as of " + LocalDateTime.now().format(fmt));
+        System.out.println();
+        System.out.printf("  Register balance:      $%.2f%n", balance);
+        System.out.printf("  Transactions on file:  %d%n", transactions.size());
+        System.out.println("  Beans in the hopper:   plenty");
+        System.out.println("  Coffee pot status:     BREWING");
+        System.out.println();
+        System.out.println("Last login: " + LocalDateTime.now().minusMinutes(7).format(fmt) + " from 192.168.1.42");
+        System.out.println();
+        System.out.print("barista@cozycafe:~$ [ Press ENTER to open the shop ] ");
+        myscanner.nextLine();
+        System.out.println();
     }
 
 }
