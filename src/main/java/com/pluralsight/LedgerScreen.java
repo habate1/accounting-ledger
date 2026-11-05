@@ -164,6 +164,54 @@ public class LedgerScreen {
                     printTransactions(results);
 
                 }
+                else if (userNum == 6) {
+                    /*
+                    6) Custom Search - prompt the user for the following search values.
+                        ▪ Start Date
+                        ▪ End Date
+                        ▪ Description
+                        ▪ Vendor
+                        ▪ Amount
+                        o If the user enters a value for a field you should filter on that field
+                        o If the user does not enter a value, you should not filter on that field
+                     */
+                    System.out.println("Enter Start Date: ");
+                    String startDate = myscanner.nextLine();
+                    System.out.println("Enter End Date: ");
+                    String endDate = myscanner.nextLine();
+                    System.out.println("Enter Description: ");
+                    String descr = myscanner.nextLine();
+                    System.out.println("Enter Vendor: ");
+                    String vendorName = myscanner.nextLine();
+                    System.out.println("Enter Amount: ");
+                    //myscanner.nextLine();
+                    double amount = myscanner.nextDouble();
+
+                    List<Transaction> transactions = readTransactions();
+                    List<Transaction> results = new ArrayList<>();
+
+
+                    for (Transaction line : transactions) {
+                        //System.out.println("line.getamount is " + line.getAmount());
+                        if (line.getAmount() == amount) {
+                            results.add(line);
+                        }
+                        if (line.getAmount() == amount) {
+                            results.add(line);
+                        }
+                        if (line.getDescription().equalsIgnoreCase(descr)) {
+                            results.add(line);
+                        }
+                        if (line.getVendor().equalsIgnoreCase(vendorName)) {
+                            results.add(line);
+                        }
+                        if (line.getAmount() == amount) {
+                            results.add(line);
+                        }
+
+                    }
+                    printTransactions(results);
+                }
                 // user input is not 0-5
                 else {
                     System.out.println("Invalid input.");
