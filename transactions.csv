@@ -1,23 +1,26 @@
 date|time|description|vendor|amount
-2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
-2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00
-2000-10-10|10:12:00|blue headphones|Apple|-400.00
-2026-11-01|09:15:00|Morning coffee|Starbucks|-5.75
-2026-11-02|12:30:45|Paycheck deposit|Employer|2500.00
-2026-11-03|08:05:10|Gas|Shell|-42.10
-2026-10-05|14:20:00|Groceries|Walmart|-87.32
-2026-10-15|10:00:00|Freelance payment|Joe|600.00
-2026-10-28|18:45:30|Electric bill|Texas Energy|-120.00
-2026-08-12|11:11:11|New headphones|Amazon|-59.99
-2026-03-20|16:40:00|Tax refund|IRS|850.00
-2026-01-10|09:00:00|Gym membership|Planet Fitness|-30.00
-2025-12-24|13:25:00|Holiday gift|Amazon|-64.50
-2025-09-09|10:10:10|Invoice 1002 paid|Joe|1200.00
-2025-05-18|15:30:00|Concert tickets|Ticketmaster|-180.00
-2025-02-14|19:00:00|Dinner|Olive Garden|-76.25
-2026-11-05|13:04:16.449149||amazon|200.00
-2026-11-05|13:07:40.787414||me|-200.00
-2026-11-05|13:25:50.413756|a|apple|200.00
-2026-11-05|13:27:07.552599||apple|200.00
-2026-11-05|13:29:22.639627|desrxpi|apple|3000.00
-2026-11-05|13:30:00.771994|desdew|apple pay|5000.00
+2026-11-05|07:02:14|Morning espresso sales|Cash Register|312.50
+2026-11-05|08:15:30|Oat milk delivery|Green Valley Dairy|-84.20
+2026-11-05|09:40:00|Catering order #212|Hill Country Offices|480.00
+2026-11-04|07:10:05|Latte and pastry sales|Cash Register|275.75
+2026-11-04|11:25:45|Coffee beans 20 lb|Amazon|-196.00
+2026-11-03|14:05:10|Cold brew keg refill|Blue Door Roasters|-132.40
+2026-11-02|16:30:00|Mobile order payouts|Square|640.10
+2026-11-01|08:00:00|Weekend brunch sales|Cash Register|529.30
+2026-10-29|10:20:00|Pastry wholesale|Sweet Crumb Bakery|-210.00
+2026-10-27|12:45:00|Corporate catering deposit|Lone Star Law Group|900.00
+2026-10-24|09:30:15|Paper cups and lids|Cup and Co Supply|-76.85
+2026-10-20|18:00:00|Electric bill|Texas Energy|-245.60
+2026-10-15|08:10:00|Gift card sales|Cash Register|350.00
+2026-10-10|13:15:30|Espresso machine repair|Brew Fix Services|-310.00
+2026-10-03|07:45:00|Weekly farmers market sales|Garland Market|725.40
+2026-09-22|15:20:00|Rent for September|Main Street Properties|-1800.00
+2026-08-14|11:05:00|Summer iced drink sales|Cash Register|1180.00
+2026-06-30|17:00:00|Business insurance|Lonestar Mutual|-420.00
+2026-04-12|10:30:00|New grinder|Barista Gear|-675.00
+2026-02-14|09:00:00|Valentine's special sales|Cash Register|860.25
+2025-12-23|12:00:00|Holiday blend sales|Cash Register|1425.00
+2025-11-11|14:40:00|Wholesale beans order|Blue Door Roasters|-540.00
+2025-08-05|09:15:00|Mug and merch sales|Cash Register|298.90
+2025-06-18|16:25:00|Patio furniture|Home Depot|-389.99
+2025-03-09|08:50:00|Grand reopening sales|Cash Register|1050.00
