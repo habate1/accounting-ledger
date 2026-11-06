@@ -11,7 +11,7 @@ public class LedgerScreen {
         Scanner myscanner = new Scanner(System.in);
         // display all menu options then save user input
         System.out.println();
-        System.out.println("barista@cozycafe:~/ledger$ menu");
+        System.out.println(Colors.GREEN + "barista@cozycafe:~/ledger$ " + Colors.RESET + "menu");
         System.out.println("----------------------------");
         System.out.println("  [A]  all        show all entries");
         System.out.println("  [D]  deposits   show deposits only");
@@ -19,7 +19,7 @@ public class LedgerScreen {
         System.out.println("  [R]  reports    run reports or custom search");
         System.out.println("  [H]  home       back to the main menu");
         System.out.println("----------------------------");
-        System.out.print("barista@cozycafe:~/ledger$ ");
+        System.out.print(Colors.GREEN + "barista@cozycafe:~/ledger$ " + Colors.RESET);
         String userInput = myscanner.nextLine();
 
         // user wants to display all entries
@@ -66,17 +66,18 @@ public class LedgerScreen {
                 boolean reports = true;
                 while (reports) {
                     System.out.println("Reports Screen");
-                    System.out.println("""
-                            ▪ 1) Month To Date
-                            ▪ 2) Previous Month
-                            ▪ 3) Year To Date
-                            ▪ 4) Previous Year
-                            ▪ 5) Search by Vendor - prompt the user for the vendor name and
-                                 display all entries for that vendor
-                            ▪ 0) Back - go back to the Ledger page
-                            """);
-                    System.out.print("Pick 1-6 or 0 to exit report screen");
-                    System.out.print("barista@cozycafe:~/ledger$ ");
+                    System.out.println();
+                    System.out.println(Colors.GREEN + "barista@cozycafe:~/ledger/reports" + Colors.RESET + "$ menu");
+                    System.out.println("----------------------------");
+                    System.out.println("  [1]  month to date");
+                    System.out.println("  [2]  previous month");
+                    System.out.println("  [3]  year to date");
+                    System.out.println("  [4]  previous year");
+                    System.out.println("  [5]  search by vendor");
+                    System.out.println("  [6]  custom search");
+                    System.out.println("  [0]  return to ledger");
+                    System.out.println("----------------------------");
+                    System.out.print(Colors.GREEN + "barista@cozycafe:~/ledger/reports~$ " + Colors.RESET);
                     int userNum = myscanner.nextInt();
                     // go back to ledger page
                     switch (userNum) {
@@ -176,16 +177,6 @@ public class LedgerScreen {
 
                         }
                         case 6 -> {
-                    /*
-                    6) Custom Search - prompt the user for the following search values.
-                        ▪ Start Date
-                        ▪ End Date
-                        ▪ Description
-                        ▪ Vendor
-                        ▪ Amount
-                        o If the user enters a value for a field you should filter on that field
-                        o If the user does not enter a value, you should not filter on that field
-                     */
                             System.out.println("Enter Start Date: ");
                             String startDate = myscanner.nextLine().trim();
                             System.out.println("Enter End Date: ");
@@ -205,7 +196,6 @@ public class LedgerScreen {
 
                             List<Transaction> transactions = readTransactions();
                             List<Transaction> results = new ArrayList<>();
-
 
                             // maybe add contains lowercase
 
@@ -232,7 +222,7 @@ public class LedgerScreen {
                         }
                         // user input is not 0-5
                         default -> {
-                            System.out.println("Invalid input.");
+                            System.out.println(Colors.RED + "Invalid input." + Colors.RESET);
                         }
                     }
                 }
@@ -244,7 +234,7 @@ public class LedgerScreen {
             }
             // user did not enter correct input
             default -> {
-                System.out.println("Invalid input.");
+                System.out.println(Colors.RED + "Invalid input." + Colors.RESET);
             }
         }
 
@@ -252,7 +242,7 @@ public class LedgerScreen {
 
     public static void printTransactions(List<Transaction> transactions) {
         if (transactions.isEmpty()) {
-            System.out.println("grep: no matches found");
+            System.out.println(Colors.RED + "grep: no matches found" + Colors.RESET);
             return;
         }
         System.out.println();
@@ -260,11 +250,8 @@ public class LedgerScreen {
         for (Transaction t : transactions) {
             System.out.println(t);   // calls your new toString()
         }
-        System.out.println();
+        //System.out.println();
         System.out.println(transactions.size() + " entries");
-
-        // byte line for background
-        // colors theme
 
         /*
         for (Transaction line : results) {

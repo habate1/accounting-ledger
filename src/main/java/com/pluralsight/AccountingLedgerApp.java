@@ -14,7 +14,6 @@ import static com.pluralsight.LedgerScreen.ledgerScreen;
 
 public class AccountingLedgerApp {
     public static void main(String[] args) {
-
         Scanner myscanner = new Scanner(System.in);
         welcomeScreen(myscanner);
 
@@ -22,14 +21,14 @@ public class AccountingLedgerApp {
         boolean displayMenu = true;
         while (displayMenu) {
             // menu options
-            System.out.println("barista@cozycafe:~$ menu");
+            System.out.println(Colors.GREEN + "barista@cozycafe:~$ " + Colors.RESET + "menu");
             System.out.println("---------------------------------------------");
             System.out.println("  [D]  deposit    add a deposit");
             System.out.println("  [P]  payment    make a payment (debit)");
             System.out.println("  [L]  ledger     open the ledger");
             System.out.println("  [X]  exit       close the register");
             System.out.println("---------------------------------------------");
-            System.out.print("barista@cozycafe:~$ ");
+            System.out.print(Colors.GREEN + "barista@cozycafe:~$ " + Colors.RESET);
             String userInput = myscanner.nextLine(); // get user input
 
             // user decides to add deposit information
@@ -45,7 +44,7 @@ public class AccountingLedgerApp {
                 }
                 case "L" -> ledgerScreen(); // user decides to display ledger screen
                 case "X" -> displayMenu = false; // user decides to exit application. set to false so while loop ends here
-                default -> System.out.println("Invalid input. Please choose from menu option only."); // user did not enter a valid input. ask user to try again and loop menu again
+                default -> System.out.println(Colors.RED + "Invalid input. Please choose from menu option only." + Colors.RESET); // user did not enter a valid input. ask user to try again and loop menu again
             }
         }
     }
@@ -115,7 +114,6 @@ public class AccountingLedgerApp {
     }
 
     public static void welcomeScreen(Scanner myscanner) {
-
         List<Transaction> transactions = readTransactions();
         double balance = 0;
         for (Transaction t : transactions) {
@@ -132,8 +130,10 @@ public class AccountingLedgerApp {
                \\      /
                 `----'
         """);
-        System.out.println("=== Accounting Ledger ===");
-        System.out.println("==== for Cozy Cafe ====");
+        System.out.println(Colors.BOLD + Colors.GREEN + "  [ ACCOUNTING LEDGER ]  " + Colors.RESET);
+        //System.out.println(Colors.bar(" ACCOUNTING LEDGER ", 45, Colors.BG_GREEN, Colors.BLACK));
+        System.out.println(Colors.bar(" COZYCAFE OS 1.0 ", 45, Colors.BG_GREEN, Colors.BLACK));
+
         System.out.println("");
 
         System.out.println("Welcome to CozyCafe OS 1.0 LTS (Espresso/Linux 6.9.0-latte)");
@@ -141,20 +141,24 @@ public class AccountingLedgerApp {
         System.out.println(" * Register:     https://cozycafe.example/menu");
         System.out.println(" * Support:      ask the barista");
         System.out.println();
-        System.out.println("  System information as of " + LocalDateTime.now().format(fmt));
+        //System.out.println("  System information as of " + LocalDateTime.now().format(fmt));
+        System.out.println("  System information as of " + Colors.CYAN + LocalDateTime.now().format(fmt) + Colors.RESET);
         System.out.println();
         System.out.printf("  Register balance:      $%.2f%n", balance);
         System.out.printf("  Transactions on file:  %d%n", transactions.size());
         System.out.println("  Beans in the hopper:   plenty");
         System.out.println("  Coffee pot status:     BREWING");
         System.out.println();
-        System.out.println("Last login: " + LocalDateTime.now().minusMinutes(7).format(fmt) + " from 192.168.1.42");
+        //System.out.println("Last login: " + LocalDateTime.now().minusMinutes(7).format(fmt) + " from 192.168.1.42");
+        System.out.println("Last login: " + Colors.CYAN + LocalDateTime.now().minusMinutes(7).format(fmt) + " from 192.168.1.42" + Colors.RESET);
         System.out.println();
-        System.out.print("barista@cozycafe:~$ [ Press ENTER to open the shop ] ");
+        System.out.print(Colors.GREEN + "barista@cozycafe:~$ " + Colors.RESET + "[ Press ENTER to open the shop ] ");
         myscanner.nextLine();
         System.out.println();
+
     }
 
 }
+
 
 
