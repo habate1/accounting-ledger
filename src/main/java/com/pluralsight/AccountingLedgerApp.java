@@ -2,12 +2,9 @@ package com.pluralsight;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 import static com.pluralsight.LedgerScreen.ledgerScreen;
@@ -15,7 +12,7 @@ import static com.pluralsight.LedgerScreen.ledgerScreen;
 public class AccountingLedgerApp {
     public static void main(String[] args) {
         Scanner myscanner = new Scanner(System.in);
-        welcomeScreen(myscanner);
+        Screens.welcomeScreen(myscanner);
 
         // while loop displays home screen until user decides to exit
         boolean displayMenu = true;
@@ -29,69 +26,64 @@ public class AccountingLedgerApp {
             System.out.println("  [X]  exit       close the register");
             System.out.println("---------------------------------------------");
             System.out.print(Colors.GREEN + "barista@cozycafe:~$ " + Colors.RESET);
-            String userInput = myscanner.nextLine(); // get user input
+            String userInput = myscanner.nextLine().trim().toUpperCase(); // get user input and convert to upper case
 
-            // user decides to add deposit information
             switch (userInput) {
-                case "D" -> {
-                    Transaction transaction = askUserInfo(myscanner);
-                    writeTransactions(transaction);
+                case "D" -> {   // user decides to add deposit information
+                    Transaction transaction = askUserInfo(myscanner);   // Ask the user for the transaction info
+                    writeTransactions(transaction); // save it to transactions.csv
                 }
-                // user decides to make payment
-                case "P" -> {
-                    Transaction transaction1 = askUserInfo(myscanner);
-                    writeTransactions(transaction1);
+                case "P" -> {   // user decides to make payment
+                    Transaction transaction1 = askUserInfo(myscanner);  // build a Transaction object from their answers
+                    writeTransactions(transaction1);    // save it to transactions.csv
                 }
                 case "L" -> ledgerScreen(); // user decides to display ledger screen
                 case "X" -> {
-                    //endScreen();
-                    displayMenu = false;
-                } // user decides to exit application. set to false so while loop ends here
+                    Screens.endScreen();    // call for exit screen
+                    displayMenu = false;    // end the loop here
+                }
                 default -> System.out.println(Colors.RED + "Invalid input. Please choose from menu option only." + Colors.RESET); // user did not enter a valid input. ask user to try again and loop menu again
             }
         }
     }
 
-    // method to print sub screen menu
-
+    // method to write to csv file
     public static void writeTransactions(Transaction transaction) {
-        try {
+        try {   // second arg true = append mode, to keep existing transactions
             BufferedWriter fileWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
-            // 2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00
+            // 2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00 format
             String line = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
-            fileWriter.write(line);
-            fileWriter.write("\n");
-
-            fileWriter.close();
+            fileWriter.write(line); // write line
+            fileWriter.write("\n"); // so every transaction has its own line
+            fileWriter.close(); // close and save file
         } catch (IOException e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
+    // read csv file and return list of Transaction Objects
     public static List<Transaction> readTransactions() {
         List<Transaction> transactions = new ArrayList<>();
         try {
             BufferedReader fileReader = new BufferedReader(new FileReader("transactions.csv"));
             String line;
-            while((line = fileReader.readLine()) != null) {
-                //print out each line
-                //System.out.println(line);
+            while((line = fileReader.readLine()) != null) {;
                 // parse each line into a Transaction object so i can later compare amounts
                 if (line.isBlank() || line.startsWith("date")) {
                     continue;
                 }
-                String[] parts = line.split("\\|");
+                String[] parts = line.split("\\|"); // split on |
+                // convert each piece of text into the right type
+                // date|time|description|vendor|amount
                 LocalDate date = LocalDate.parse(parts[0]);
                 LocalTime time = LocalTime.parse(parts[1]);
                 String description = parts[2];
                 String vendor = parts[3];
                 double amount = Double.parseDouble(parts[4]);
-                transactions.add(new Transaction(date, time, description, vendor, amount));
+                transactions.add(new Transaction(date, time, description, vendor, amount)); // build the Transaction and add it to the list
             }
-
-            //close the file when we are done
-            fileReader.close();
+            fileReader.close(); // close the file when we are done
         } catch (IOException e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
@@ -99,96 +91,24 @@ public class AccountingLedgerApp {
         return transactions;
     }
 
+    // prompts for the description, vendor, and amount, then builds a Transaction
     public static Transaction askUserInfo(Scanner myscanner) {
+        // date and time come from computer
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
 
+        // prompt and store info from user for descr, vendor, and amount
         System.out.println("Please add deposit short description");
         String description = myscanner.nextLine();
         System.out.println("Please add vendor");
         String vendor = myscanner.nextLine();
         System.out.println("Please enter amount");
         String amount = myscanner.nextLine();
-        int amountVal = Integer.parseInt(amount);
-        Transaction transaction1 = new Transaction(date, time, description, vendor, amountVal);
+        int amountVal = Integer.parseInt(amount);   // parse string into int for transaction object
 
-        return transaction1;
-
-    }
-
-    public static void welcomeScreen(Scanner myscanner) {
-        List<Transaction> transactions = readTransactions();
-        double balance = 0;
-        for (Transaction t : transactions) {
-            balance += t.getAmount();
-        }
-
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss yyyy");
-
-        System.out.println("""
-                 ( (
-                  ) )
-               ........
-               |      |]
-               \\      /
-                `----'
-        """);
-        System.out.println(Colors.BOLD + Colors.GREEN + "  [ ACCOUNTING LEDGER ]  " + Colors.RESET);
-        //System.out.println(Colors.bar(" ACCOUNTING LEDGER ", 45, Colors.BG_GREEN, Colors.BLACK));
-        System.out.println(Colors.bar(" COZYCAFE OS 1.0 ", 45, Colors.BG_GREEN, Colors.BLACK));
-
-        System.out.println("");
-
-        System.out.println("Welcome to CozyCafe OS 1.0 LTS (Espresso/Linux 6.9.0-latte)");
-        System.out.println();
-        System.out.println(" * Register:     https://cozycafe.example/menu");
-        System.out.println(" * Support:      ask the barista");
-        System.out.println();
-        //System.out.println("  System information as of " + LocalDateTime.now().format(fmt));
-        System.out.println("  System information as of " + Colors.CYAN + LocalDateTime.now().format(fmt) + Colors.RESET);
-        System.out.println();
-        System.out.printf("  Register balance:      $%.2f%n", balance);
-        System.out.printf("  Transactions on file:  %d%n", transactions.size());
-        System.out.println("  Beans in the hopper:   plenty");
-        System.out.println("  Coffee pot status:     BREWING");
-        System.out.println();
-        //System.out.println("Last login: " + LocalDateTime.now().minusMinutes(7).format(fmt) + " from 192.168.1.42");
-        System.out.println("Last login: " + Colors.CYAN + LocalDateTime.now().minusMinutes(7).format(fmt) + " from 192.168.1.42" + Colors.RESET);
-        System.out.println();
-        System.out.print(Colors.GREEN + "barista@cozycafe:~$ " + Colors.RESET + "[ Press ENTER to open the shop ] ");
-        myscanner.nextLine();
-        System.out.println();
+        return new Transaction(date, time, description, vendor, amountVal); // build and return the Transaction from the five values
 
     }
-
-    public static void endScreen() throws InterruptedException {
-
-        String[] steps = {"Saving ledger", "Closing the register", "Turning off the espresso machine", "Locking the front door"};
-        for (String step : steps) {
-            System.out.println("[ " + Colors.GREEN + "OK" + Colors.RESET + " ] " + step);
-            try {
-                Thread.sleep(400);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }// needs try/catch
-        }
-
-        List<Transaction> all = readTransactions();
-        double balance = 0;
-        for (Transaction t : all) balance += t.getAmount();
-
-        System.out.println(Colors.CYAN + "--- session summary ---" + Colors.RESET);
-        System.out.printf("  Register balance:     $%.2f%n", balance);
-        System.out.printf("  Transactions on file: %d%n", all.size());
-        System.out.println("  Session ended:        " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss yyyy")));
-
-        System.out.println();
-        System.out.println(Colors.GREEN + "barista@cozycafe:~$ " + Colors.RESET + "exit");
-        System.out.println("logout");
-        System.out.println("Connection to cozycafe.example closed.");
-
-    }
-
 }
 
 

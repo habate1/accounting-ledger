@@ -53,8 +53,35 @@ public class Screens {
     }
     // prints the shutdown steps, a session summary, and the fake SSH logout message
     public static void endScreen() {
-        // shutdown steps
+        // // shutdown steps, printed one at a time with a short pause between them
         String[] steps = {"Saving ledger", "Closing the register", "Turning off the espresso machine", "Locking the front door"};
+        for (String step : steps) {
+            System.out.println("[ " + Colors.GREEN + "OK" + Colors.RESET + " ] " + step);   // [ ok ] with green ok
+            try {
+                Thread.sleep(400);  // pause program so steps appear one by one
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }// needs try/catch
+        }
 
+        // load file
+        List<Transaction> all = AccountingLedgerApp.readTransactions();
+        double balance = 0;
+        for (Transaction t : all) {
+            balance += t.getAmount();   // add deposits, subtract payments
+        }
+
+        // session summary
+        System.out.println();
+        System.out.println(Colors.CYAN + "--- session summary ---" + Colors.RESET);
+        System.out.printf("  Register balance:     $%.2f%n", balance);
+        System.out.printf("  Transactions on file: %d%n", all.size());
+        System.out.println("  Session ended:        " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss yyyy")));
+
+        // fake SSH logout
+        System.out.println();
+        System.out.println(Colors.GREEN + "barista@cozycafe:~$ " + Colors.RESET + "exit");
+        System.out.println("logout");
+        System.out.println("Connection to cozycafe.example closed.");
     }
 }
