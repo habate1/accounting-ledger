@@ -43,7 +43,10 @@ public class AccountingLedgerApp {
                     writeTransactions(transaction1);
                 }
                 case "L" -> ledgerScreen(); // user decides to display ledger screen
-                case "X" -> displayMenu = false; // user decides to exit application. set to false so while loop ends here
+                case "X" -> {
+                    //endScreen();
+                    displayMenu = false;
+                } // user decides to exit application. set to false so while loop ends here
                 default -> System.out.println(Colors.RED + "Invalid input. Please choose from menu option only." + Colors.RESET); // user did not enter a valid input. ask user to try again and loop menu again
             }
         }
@@ -155,6 +158,34 @@ public class AccountingLedgerApp {
         System.out.print(Colors.GREEN + "barista@cozycafe:~$ " + Colors.RESET + "[ Press ENTER to open the shop ] ");
         myscanner.nextLine();
         System.out.println();
+
+    }
+
+    public static void endScreen() throws InterruptedException {
+
+        String[] steps = {"Saving ledger", "Closing the register", "Turning off the espresso machine", "Locking the front door"};
+        for (String step : steps) {
+            System.out.println("[ " + Colors.GREEN + "OK" + Colors.RESET + " ] " + step);
+            try {
+                Thread.sleep(400);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }// needs try/catch
+        }
+
+        List<Transaction> all = readTransactions();
+        double balance = 0;
+        for (Transaction t : all) balance += t.getAmount();
+
+        System.out.println(Colors.CYAN + "--- session summary ---" + Colors.RESET);
+        System.out.printf("  Register balance:     $%.2f%n", balance);
+        System.out.printf("  Transactions on file: %d%n", all.size());
+        System.out.println("  Session ended:        " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss yyyy")));
+
+        System.out.println();
+        System.out.println(Colors.GREEN + "barista@cozycafe:~$ " + Colors.RESET + "exit");
+        System.out.println("logout");
+        System.out.println("Connection to cozycafe.example closed.");
 
     }
 

@@ -26,40 +26,28 @@ public class LedgerScreen {
         switch(userInput) {
             case "A" -> {
                 List<Transaction> transactions = readTransactions();
-                List<Transaction> entries = new ArrayList<>();
                 for (Transaction line : transactions) {
-                    entries.add(line);
+                    System.out.println(line);
                 }
-                printTransactions(entries);
-
             }
             // display only the entries that are deposits into the account
             case "D" -> {
-                //System.out.println("inside D - print deposits");
                 List<Transaction> transactions = readTransactions();
-                List<Transaction> deposits = new ArrayList<>();
                 for (Transaction line : transactions) {
-                    //System.out.println("line.getamount is " + line.getAmount());
                     if (line.getAmount() > 0) {
-                        //System.out.println("line amount is over 0");
-                        deposits.add(line);
+                        System.out.println(line);
                     }
                 }
-                printTransactions(deposits);
             }
             // Display only the negative entries (or payments")
             case "P" -> {
                 List<Transaction> transactions = readTransactions();
-                List<Transaction> payments = new ArrayList<>();
                 for (Transaction line : transactions) {
                     //System.out.println("line.getamount is " + line.getAmount());
                     if (line.getAmount() < 0) {
-                        //System.out.println("line amount is under 0");
-                        payments.add(line);
+                        System.out.println(line);
                     }
                 }
-                printTransactions(payments);
-
             }
             // A new screen that allows the user to run predefined reports
             case "R" -> {
@@ -87,75 +75,51 @@ public class LedgerScreen {
                         // month to date
                         case 1 -> {
                             LocalDate today = LocalDate.now();
-
                             int year = today.getYear(), month = today.getMonthValue();
 
                             List<Transaction> transactions = readTransactions();
-                            List<Transaction> results = new ArrayList<>();
                             for (Transaction line : transactions) {
                                 //System.out.println("line.getamount is " + line.getAmount());
                                 if (line.getDate().getYear() == year && line.getDate().getMonthValue() == month) {
-                                    results.add(line);
+                                    System.out.println(line);
                                 }
                             }
-                            printTransactions(results);
                         }
-                        // previous month
-
-                        // dont need to create a new list just print that specific transaction line
-
                         case 2 -> {
                             LocalDate today = LocalDate.now();
-
                             int year = today.getYear(), month = today.getMonthValue();
 
                             List<Transaction> transactions = readTransactions();
-                            List<Transaction> results = new ArrayList<>();
                             for (Transaction line : transactions) {
                                 //System.out.println("line.getamount is " + line.getAmount());
                                 if (line.getDate().getYear() == year && line.getDate().getMonthValue() == month - 1) {
-                                    results.add(line);
+                                    System.out.println(line);
                                 }
-
                             }
-                            printTransactions(results);
-
                         }
                         // year to date
                         case 3 -> {
                             LocalDate today = LocalDate.now();
-
-                            int year = today.getYear(), month = today.getMonthValue();
+                            int year = today.getYear();
 
                             List<Transaction> transactions = readTransactions();
-                            List<Transaction> results = new ArrayList<>();
                             for (Transaction line : transactions) {
-                                //System.out.println("line.getamount is " + line.getAmount());
                                 if (line.getDate().getYear() == year) {
-                                    results.add(line);
+                                    System.out.println(line);
                                 }
-
                             }
-                            printTransactions(results);
-
                         }
                         //previous year
                         case 4 -> {
                             LocalDate today = LocalDate.now();
-
-                            int year = today.getYear(), month = today.getMonthValue();
+                            int year = today.getYear();
 
                             List<Transaction> transactions = readTransactions();
-                            List<Transaction> results = new ArrayList<>();
                             for (Transaction line : transactions) {
-                                //System.out.println("line.getamount is " + line.getAmount());
                                 if (line.getDate().getYear() == year - 1) {
-                                    results.add(line);
+                                    System.out.println(line);
                                 }
-
                             }
-                            printTransactions(results);
-
                         }
                         // search by vendor
                         case 5 -> {
@@ -165,16 +129,11 @@ public class LedgerScreen {
                             String vendorName = myscanner.nextLine();
 
                             List<Transaction> transactions = readTransactions();
-                            List<Transaction> results = new ArrayList<>();
                             for (Transaction line : transactions) {
-                                //System.out.println("line.getamount is " + line.getAmount());
                                 if (line.getVendor().equalsIgnoreCase(vendorName)) {
-                                    results.add(line);
+                                    System.out.println(line);
                                 }
-
                             }
-                            printTransactions(results);
-
                         }
                         case 6 -> {
                             System.out.println("Enter Start Date: ");
@@ -202,23 +161,22 @@ public class LedgerScreen {
                             for (Transaction line : transactions) {
                                 //System.out.println("line.getamount is " + line.getAmount());
                                 if (line.getDate() == parseStart) {
-                                    results.add(line);
+                                    System.out.println(line);
                                 }
                                 if (line.getDate() == parseEnd) {
-                                    results.add(line);
+                                    System.out.println(line);
                                 }
                                 if (line.getDescription().equalsIgnoreCase(descr)) {
-                                    results.add(line);
+                                    System.out.println(line);
                                 }
                                 if (line.getVendor().equalsIgnoreCase(vendorName)) {
-                                    results.add(line);
+                                    System.out.println(line);
                                 }
                                 if (line.getAmount() == amount) {
-                                    results.add(line);
+                                    System.out.println(line);
                                 }
 
                             }
-                            printTransactions(results);
                         }
                         // user input is not 0-5
                         default -> {
@@ -237,31 +195,6 @@ public class LedgerScreen {
                 System.out.println(Colors.RED + "Invalid input." + Colors.RESET);
             }
         }
-
-    }
-
-    public static void printTransactions(List<Transaction> transactions) {
-        if (transactions.isEmpty()) {
-            System.out.println(Colors.RED + "grep: no matches found" + Colors.RESET);
-            return;
-        }
-        System.out.println();
-        System.out.println(Transaction.header());
-        for (Transaction t : transactions) {
-            System.out.println(t);   // calls your new toString()
-        }
-        //System.out.println();
-        System.out.println(transactions.size() + " entries");
-
-        /*
-        for (Transaction line : results) {
-            //System.out.println(" about to print ");
-            System.out.printf("%s|%s|%s|%s|%.2f%n",
-                    line.getDate(), line.getTime(), line.getDescription(),
-                    line.getVendor(), line.getAmount());
-        }
-
-         */
 
     }
 }
