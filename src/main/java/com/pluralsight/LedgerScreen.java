@@ -62,7 +62,6 @@ public class LedgerScreen {
                     System.out.println("  [3]  year to date");
                     System.out.println("  [4]  previous year");
                     System.out.println("  [5]  search by vendor");
-                    System.out.println("  [6]  custom search");
                     System.out.println("  [0]  return to ledger");
                     System.out.println("----------------------------");
                     System.out.print(Colors.GREEN + "barista@cozycafe:~/ledger/reports~$ " + Colors.RESET);
