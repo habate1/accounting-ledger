@@ -62,27 +62,6 @@ public class Transaction {
     public String getVendor() {
         return vendor;
     }
-
-
-
-
-
-
-
-
-    ///
-    /*
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "date=" + date +
-                ", time=" + time +
-                ", description='" + description + '\'' +
-                ", vendor='" + vendor + '\'' +
-                ", amount=" + amount +
-                '}';
-    }
-    */
     // header row: same widths as toString() below
     public static String header() {
         return String.format("%-12s %-9s %-26s %-17s %10s%n%-12s %-9s %-26s %-17s %10s",
